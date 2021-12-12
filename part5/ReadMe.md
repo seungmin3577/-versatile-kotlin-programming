@@ -78,11 +78,206 @@ fun main() {
 		val numbers = arrayOf(1, 2, 3)
     println(numbers::class) // class kotlin.Array
     println(numbers.javaClass) // class [Ljava.lang.Integer;
+
+		val numbers2 = intArrayOf(1, 2, 3)
+		println(numbers2::class)// class kotlin.Array
+    println(numbers2.javaClass) // class [I
 }
 ```
 
-- Array<T> 클래스는 코틀린의 배열을 상징한다.
+- `Array<T>` 클래스는 코틀린의 배열을 상징한다.
 - 배열은 **낮은 수준의 최적화(?)**가 필요할 때만 사용한다. 그외에는 List같은 다른 자료구조를 사용하자.
 - 배열을 만들면 인덱스 연산자 []를 이요해 요소에 접근할 수 있다.
 - friends 변수는 배열 인스턴스의 참조(주소값)를 가지고 있다.
 - numbers 배열의 자바 Class를 보면 Integer 배열로 정의 된다. 이렇게 되면 int 배열에 비해서 **오버헤드(?)**가 크게 걸린다.
+- Class로 박싱되면서 발생하는 오버헤드를 피하기 위해서 만들어진 intArraytOf() 함수 같은 특수 함수들이 있다.
+- Array 객체의 생성자는 파라미터로 배열의 사이즈와 () 부터 시작하는 인덱스를 받아 해당 위치에 있는 값을 리턴해 주는 함수를 받는다.
+- 만약에 정렬된, 길이가 바뀔 수 있는 콜렉션을 원한다면 배열보다는 리스트 사용을 고려해야한다. 배열은 뮤터블한 반면, 리스트는 뮤터블/이뮤터블 모두 제공하기 때문에 원하는 대로 사용이 가능하다.
+
+<aside>
+💡 주한님 Question: 배열과 List가 다른점은 무엇인가요?
+
+</aside>
+
+### Array와 List의 차이점?
+
+- 배열
+  - 같은 자료형을 가진 값들을 하나로 나타낸 것
+  - 초기화와 동시에 `크기가 정해짐`
+  - `메모리 공간에 연속적`으로 저장 됌
+  - 인덱스를 통해 값에 접근한다.
+  - 정적 타입
+- 리스트
+  - 순서가 있는 엘리먼트의 집합, 시퀀스라고도 부름
+  - `불연속적인 메모리` 공간을 점유, 메모리 관리가 용이하다.
+  - 동적 타입
+  - 포인터를 통해 값에 접근
+  - 인덱스는 몇 번째 데이터인가 정도의 의미를 갖음
+
+장단점
+
+- 배열에서는 값을 삭제하더라도 크기가 줄어들지 않아 메모리가 낭비된다.
+- 연속된 메모리 공간을 사용해서 메모리 관리가 편하고 검색성능이 좋다.
+- 리스트는 포인터를 통해 다음값을 가르키므로 배열 대비 추가적인 메모리 공간이 필요하다.
+
+# List 사용하기
+
+```kotlin
+//lists.kt
+fun main() {
+    val fruits: List<String> = listOf("Apple", "Banana", "Apple",  "Banana", "Grape")
+    println(fruits)
+    println("first's ${fruits[0]}, that's ${fruits.get(0)}")
+    println(fruits.contains("Apple"))
+    println("Apple" in fruits)
+    // fruits.add("Orange") // error: unresolved reference: add
+
+    val fruits2 = fruits + "Orange"
+    println(fruits)
+    println(fruits2)
+    val subBanana = fruits - "Banana"
+    println(subBanana)
+
+    println(fruits.javaClass)
+    println(fruits::class)
+
+    val fruits3: MutableList<String> = mutableListOf("Apple", "Bnana", "Apple",  "Banana", "Grape")
+    println(fruits3::class)
+    println(fruits3.javaClass)
+    println(fruits3.add("Banana")) // true
+    println(fruits3)
+    println(fruits3.remove("Apple")) // true
+    println(fruits3)
+    println(fruits3.remove("Apple2")) // false
+    println(fruits3)
+}
+```
+
+- 리스트를 만들려면 이뮤터블/뮤터블 (listOf()/mutableListOf) 인지 선택 해야한다.
+- 이뮤터블을 선호하는걸 권장한다.
+- 리스트의 내장 메소드
+  - 접근하기 위해서는 전톡적인 get()을 사용할 수 있다 그리고 인덱스 연산자 [] 역시 사용 가능하다. ( 노이즈가 적고 편리한 인덱스 연산자를 사용하는 것을 권장한다.)
+  - 콜렉션에 값이 있는지 없는지 확인하기 위해서 contains()를 사용하거나 in 연산자를 사용할 수 있다. (표현력이 좋고 직관성이 있는 in을 사용하는 것을 권장한다.)
+- - 연산자로 리스트에 해당 값을 추가된 리스트를 반환해 만들어 줄 수 있다.
+- - 연산자로 리스트에 해당 값을 뺀 리스트를 반환해 만들어 줄 수 있다.
+    - 여러개 있다고 하더라도 처음에 서칭된 값 하나만 빼진다.
+    - 값이 없다면 없는대로 반환 된다.
+- listOf() 메소드는 읽기 전용 참조를 리턴해 준다.
+
+# Set 사용하기
+
+```kotlin
+// sets.kt
+import kotlin.collections.hashSetOf
+
+fun main() {
+    val fruits: Set<String> = setOf("Apple", "Banana", "Apple")
+    println(fruits)
+    // println(fruits.add("Apple"))
+
+    val fruits2: MutableSet<String> = mutableSetOf("Apple", "Banana", "Apple")
+    println(fruits2)
+    println(fruits2.add("Apple"))
+    println(fruits2) // false
+    println(fruits2.add("Apple2"))
+    println(fruits2) // true
+    println(fruits2.remove("Apple2"))
+    println(fruits2.size)
+    println("Apple" in fruits2)
+    println(fruits2.contains("Apple"))
+
+    val numbers: HashSet<Int> = hashSetOf(1, 3, 2, 7, 4)
+    println(numbers)
+    numbers.add(-3)
+    numbers.add(0)
+    numbers.add(5)
+    println(numbers)
+    println(numbers.javaClass)
+    println(numbers::class)
+
+    val numbers2: LinkedHashSet<Int> = linkedSetOf(1, 3, 2, 7, 4)
+    println(numbers2)
+    numbers2.add(-3)
+    numbers2.add(0)
+    numbers2.add(5)
+    println(numbers2)
+    println(numbers2.javaClass)
+    println(numbers2::class)
+
+    val numbers3: MutableSet<Int> = mutableSetOf(1, 3, 2, 7, 4)
+    println(numbers3)
+    numbers3.add(-3)
+    numbers3.add(0)
+    numbers3.add(5)
+    println(numbers3)
+    println(numbers3.javaClass)
+    println(numbers3::class)
+}
+```
+
+- Set은 정렬되지 않은 요소의 모음이다.
+- List처럼 이뷰터블/뮤터블 버전 모두 있다. (setOf/mutableSet)
+- hashSetOf() 메소드를 이용해서 java.util.HashSet의 참조를 만들 수도 있다.
+- LinkedHashSet을 만들려면 linkedSetOf()를 사용한다.
+- TreeSet을 만들려면 sortedSetOf()를 이용한다.
+- List처럼 Set과 MutableSet에는 +, -, contains, in 등 많은 함수들이 있다.
+- hashSetOf vs linkedSetOf의 차이점은 순서 보장의 차이가 있다. HashSetOf는 add()시 들어가는 순서가 보장되지 않는 반면 hashLinkedSet은 add()시 들어가는 순서가 보장이 된다.
+- set은 linkedSetOf와 같다.
+
+# Map 사용하기
+
+```kotlin
+// usingmap.kt
+fun main() {
+    val sites = mapOf("Progprog" to "https://www.pragprog.com", "agiledeveloper" to "https://agiledeveloper.com")
+
+    println(sites.size) //2
+    println(sites.containsKey("agiledeveloper"))
+    println(sites.containsValue("http://www.example.com"))
+    println(sites.contains(("agiledeveloper")))
+    println("agiledeveloper" in sites)
+
+    // val pragProgSite: String = sites.get("pragprog") // error: type mismatch: inferred type is String? but String was expected
+    val pragProgSite: String? = sites.get("pragprog")
+    val pragProgSite2: String? = sites["pragprog"]
+
+    val agiledeveloper = sites.getOrDefault("agiledeveloper", "http://example.com")
+
+    val sitesWithExample = sites + ("example" to "http://www.example.com")
+    val withoutAgileDeveloper = sites - "agiledeveloper"
+
+    for( entry in sites) {
+        println("${entry.key} --- ${entry.value}" )
+    }
+
+    for((key, value) in sites) {
+        println("$key --- $value")
+    }
+
+}
+
+```
+
+- Map은 키-값 페어를 보관하는 콜렉션이다.
+- List처럼 이뮤터블/뮤터블 두가지 인터페이스를 제공한다. (mapOf/mutableMap)
+- JDK의 HashMap의 참조를 얻기 위해선 hashMapOf()를 사용할 수 있다.
+- LinkedHashMap을 얻기 위해선 linkedMapOf()를 사용 할 수 잇다.
+- SortedMap을 얻기 위해선 sortedMapOf()를 사용한다.
+- 맵의 keys 속성을 이용해서 맵에 존재하는 모든키를 반복할 수 있다.
+- values를 이용하면 맵에 존재하는 모든 값을 반복할 수 있다.
+- contains() 메소드 또는 containsKey() 또는 in 연산자를 이용해서 키가 존재하는지 확인할 수 있다.
+- containsValue() 메소드를 통해 값이 존재하는지 확인 할 수 있다.
+- get()메소드 또는 인덱스 연산자 []는 키가 맵에 없을 경우 nullable 타입을 리턴한다.
+- getOrDefault(key, default)를 통해 키가 없을 시 기본값을 리턴할 수 있다.
+- mapOf()함수는 읽기전용 참조만 전달해 줘서 맵을 변경할 수 없지만 키-값 Pair를 +연산자로 추가해서 새로운 맵을 만들 수 있다.
+- 비슷하게 -연산자를 이요해 특정 키-값을 제거한 새로운 맵을 만들수 있다.
+- 맵을 반복하기 위해서 for 루프를 사용할 수 있다. 구조분해도 가능하다.
+- 맵 인터페이스는 2개의 특별한 메소드를 가지고 있다. getValue()와 setValue()이다. 두 메소드는 맵을 대리자로 사용 가능하게 해주는 메소드이다.
+
+# 정리
+
+- 코틀린은 자바의 콜렉션을 확장하는 동시에 읽기전용 뷰를 통해서 컴파일 시간의 안정성을 향상시켰다.
+- 함수형 코드, 동시성 코드, 비동기 프로그램을 만들 때는 읽기전용 뷰를 사용해야 한다.
+- 페어와 트리플을 한정된 작은 크기의 콜렉션을 만들기에 유용하다.
+- 크기가 크고, 고정된 크기의 콜렉션을 만들 때는 Array클래스를 사용하는 것이 좋다.
+- 크키가 동적으로 변경되는 콜렉션이라면 리스트와 셋 중에서 골라서 사용하면 된다.
