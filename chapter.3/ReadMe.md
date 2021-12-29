@@ -1,4 +1,4 @@
-# Part3. 함수를 사용하자
+# Chapter3. 함수를 사용하자
 
 - 코틀린은 무조건 클래스를 사용하라고 강요하지 않는다.
 - 코드 재사용이 무조건 클래스 계층화를 의미하는 건 아니다.
@@ -46,12 +46,14 @@ println("The result of sayHello is $message")
 ## 파라미터 정의하기
 
 - 코틀린은 함수나 메소드에 파라미터의 타입을 명시하도록 했다.
+
   ```kotlin
   // passingarguments.kts
 
   fun greet(name: String): String = "Hello $name"
   println(greet("Eve")) //Hello Eve
   ```
+
 - 파라미터를 변경하려하면 컴파일 오류를 발생 시킨다.
 
 ## 블록바디로 만든 함수
@@ -63,6 +65,7 @@ println("The result of sayHello is $message")
   fun notReally() = {2}
   ```
 - =을 블록과 함께 사용하고 리턴타입을 명시하지 않은 경우
+
   ```kotlin
   //caveat.kts
 
@@ -84,6 +87,7 @@ println("The result of sayHello is $message")
 ## 기본 아규먼트를 통한 함수 변경
 
 - 기본 아규먼트는 기본값을 가지는 파라미터다.
+
   ```kotlin
   //defaultarguments.kts
 
@@ -91,10 +95,12 @@ println("The result of sayHello is $message")
   println(greet("Eve")) // Hello Eve
   println(greet("Eve", "Howdy")) // Howdy Eve
   ```
+
 - 일반 파라미터는 값이 항상 필요하기 때문에 호출하는 쪽에서는 기본 아규먼트에도 값을 무조건 넣어줘야한다.
 - 함수에 명시적 아규먼트를 사용한다면 호출하는 쪽에서 생략할 수 있다.
 - 기본 아규먼트를 효과적으로 만들기 위해서는 맨 마지막에 사용하는 것이 좋고, 람다표현식이 파라미터로 들어오는 경우는 람다표현식 앞에서 사용하면 된다.
 - 기본 아규먼트는 값일 필요가 없고 표현식이 올 수도 있다.
+
   ```kotlin
   //defaultcompute.kts
 
@@ -117,6 +123,7 @@ println("The result of sayHello is $message")
 ## 여러 개의 인자
 
 - 코틀린 함수들은 많은 수의 인자를 받을 수 있다.
+
   ```kotlin
   //vararg.kts
 
@@ -131,6 +138,7 @@ println("The result of sayHello is $message")
   println(max(1, 5, 2)) // 5
   println(max(1, 5, 2, 12, 7, 3)) // 12
   ```
+
 - vararg 키워드는 함수에서 하나의 파라미터에서만 사용할 수 있다.
 - 파라미터가 여러개 일 경우 vararg 파라미터를 마지막에 넣는것을 강력하게 추천한다.
 - vararg를 마지막에 사용하지 않는다면, 함수를 호출할 때 반드시 명시적 인자를 사용해야 한다.
@@ -141,6 +149,7 @@ println("The result of sayHello is $message")
 ## 스프레드 연산자
 
 - 함수가 다중 인자를 받을수 있도록 정의되어 있을때 배열이나 리스트를 직접 받을 수 없다. 이럴 때 스프레드 연산자가 필요하다.
+
   ```kotlin
   // vararg.kts
 
@@ -152,9 +161,11 @@ println("The result of sayHello is $message")
   println(max(values[0]), values[1], values[2]) //장황하고 부끄러움
   println(max(*values)) //21
   ```
+
 - 배열이 있으면 스프레드를 사용할 수 있지만 보통 배열보다 리스트를 많이 사용한다.
 - 리스트에 직접 스프레드 연산자는 적용할 수 없다.
 - 리스트를 배열로 변환 후 적용가능하다.
+
   ```kotlin
   //vararg.kts
 
@@ -164,6 +175,7 @@ println("The result of sayHello is $message")
 # 구조분해
 
 - 객체에서 값을 추출해 변수로 넣는 작업이다. 코틀린의 구조분해 기능은 Javascript와 유사하다.
+
   ```kotlin
   //destructuring.kts
 
@@ -179,6 +191,7 @@ println("The result of sayHello is $message")
   val (first, _, last) = getFullName()
   println("$first $last") //J A
   ```
+
 - \_ 언더스코어를 쓰면 생략 가능하다.
 
 # 정리

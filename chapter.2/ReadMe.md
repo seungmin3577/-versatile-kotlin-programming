@@ -1,4 +1,4 @@
-# Part2. Java개발자를 위한 코틀린 필수 사항
+# Chapter2. Java개발자를 위한 코틀린 필수 사항
 
 - 코틀린은 세미콜론, 타입 정의, 클래스 등 다른 언어에서는 필수적인 것들을 몇 가지 선택사항(Optional)으로 만듦.
 - 코틀린 변수를 만들 때 뮤터블(Mutable, 변경가능)인지 이뮤터블(immutable, 변경 불가능)인지를 결정해야 한다.
@@ -9,6 +9,7 @@
 
 - 세미콜론은 생략해도 된다.
 - 변수 타입 지정은 생략해도 된다. (타입 추론이 가능하다.)
+
   ```kotlin
   // typeinference.kts
 
@@ -17,7 +18,9 @@
   println(greet::class) // class kotlin.String
   println(greet.javaClass) // class java.lang.String
   ```
+
 - 클래스와 함수는 생략 가능하다
+
   ```kotlin
   //standalone.kts
 
@@ -44,6 +47,7 @@
    * Standalone.<init>(standalone.kts:10)
    * */
   ```
+
 - Try-Catch는 선택사항이다.
 
 # 현명한 경고
@@ -122,6 +126,7 @@ println(memo.trimMargin("~")) // default |
 - 표현식은 결과를 리턴해주고 어떤 상태도 변화시키지 않는다.
 
 - 코틀린은 try-catch도 표현식으로 취급한다.
+
   ```kotlin
   fun tryExpr(blowup: Boolean): Int {
   	return try {
